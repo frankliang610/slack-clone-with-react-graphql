@@ -23,7 +23,10 @@ const server = new ApolloServer({
     }
   },
   context: {
-    models
+    models,
+    user: {
+      id: 1
+    }
   }
 });
 

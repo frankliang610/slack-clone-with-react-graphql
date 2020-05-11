@@ -6,4 +6,12 @@ export default gql`
     members: [User]!
     channel: [Channel!]!
   }
+
+  # type Query {
+
+  # }
+
+  type Mutation {
+    createTeam(name: String!): Boolean!
+  }
 `;

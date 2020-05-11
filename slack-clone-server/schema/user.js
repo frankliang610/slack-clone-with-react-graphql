@@ -1,16 +1,17 @@
-// import { gql } from 'apollo-server-express';
+import { gql } from 'apollo-server-express';
 
-export default `
+export default gql`
 
   type User {
     id: Int!
+    username: String!
     email: String!
     message: Message!
   }
 
   type Query {
     getUser(id: Int!): User!
-    allUsers(id: Int!): [User!]!
+    allUsers: [User!]!
   }
 
   type Mutation {
