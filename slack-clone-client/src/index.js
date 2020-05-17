@@ -10,19 +10,6 @@ const client = new ApolloClient({
   uri: 'http://localhost:3003/graphql',
 });
 
-client
-  .query({
-    query: gql`
-      {
-        allUsers {
-          id,
-          username
-        }
-      }
-    `
-  })
-  .then(result => console.log(result));
-
 const App = () => (
   <ApolloProvider client={client}>
     <Routes />
