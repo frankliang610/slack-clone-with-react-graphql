@@ -2,10 +2,11 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import path from 'path';
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
+import cors from 'cors';
 
 const PORT = 3003;
 const app = express();
-
+app.use(cors('*'));
 
 import models from './models';
 
