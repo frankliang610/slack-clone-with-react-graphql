@@ -10,6 +10,9 @@ app.use(cors('*'));
 
 import models from './models';
 
+const SECRET = 'adfadfadgadgajdfa';
+const SECRET2 = 'adfadfadgadgajdfa1241312312#@$#%';
+
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schema')));
 
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')));
@@ -27,7 +30,9 @@ const server = new ApolloServer({
     models,
     user: {
       id: 1
-    }
+    },
+    SECRET,
+    SECRET2
   }
 });
 
