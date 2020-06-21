@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 // eslint-disable-next-line
 const allUsersQuery = gql`

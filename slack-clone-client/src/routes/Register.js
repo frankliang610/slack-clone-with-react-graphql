@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Container, Header, Input, Button, Message } from 'semantic-ui-react';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 class Register extends Component {

@@ -3,7 +3,7 @@ import { Form, Container, Header, Input, Button, Message } from 'semantic-ui-rea
 import { extendObservable } from "mobx";
 import { observer } from "mobx-react";
 import { graphql } from 'react-apollo';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 
 class Login extends Component {
