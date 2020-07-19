@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Icon } from 'semantic-ui-react';
 
 const ChannelsWrapper = styled.div`
   grid-column: 2;
@@ -24,47 +25,54 @@ const paddingLeft = 'padding-left: 10px';
 const SidebarListItem = styled.li`
   padding: 2px;
   ${paddingLeft};
-  $:hover {
+  &:hover {
     background: #3e313c;
   }
 `;
 
-const SidebarListHeader = styled.li`${paddingLeft};`;
+const SidebarListHeader = styled.li`
+  ${paddingLeft};
+`;
 
-const PushLeft = styled.div`${paddingLeft};`;
+const PushLeft = styled.div`
+  ${paddingLeft};
+`;
 
-const GreenDot = styled.span`color: #38978d;`;
+const GreenDot = styled.span`
+  color: #38978d;
+`;
 
 const Dot = ({ on = true }) => (on ? <GreenDot>●</GreenDot> : '○');
 
-const channel = ({ id, name }) => <SidebarListItem key={`channel-${id}`}># {name}</SidebarListItem>
+const channel = ({ id, name }) => (
+  <SidebarListItem key={`channel-${id}`}># {name}</SidebarListItem>
+);
 
-const user = ({ id, name }) => <SidebarListItem key={`user-${id}`}><Dot /> {name}</SidebarListItem>
+const user = ({ id, name }) => (
+  <SidebarListItem key={`user-${id}`}>
+    <Dot /> {name}
+  </SidebarListItem>
+);
 
-export default ({
-  teamName,
-  userName,
-  channels,
-  users
-}) => (
-    <ChannelsWrapper>
-      <PushLeft>
-        <TeamNameHeader>
-          {teamName}
-        </TeamNameHeader>
-        {userName}
-      </PushLeft>
-      <div>
-        <SidebarList>
-          <SidebarListHeader>Channels</SidebarListHeader>
-          {channels.map(channel)}
-        </SidebarList>
-      </div>
-      <div>
-        <SidebarList>
-          <SidebarListHeader>Direct Messages</SidebarListHeader>
-          {users.map(user)}
-        </SidebarList>
-      </div>
-    </ChannelsWrapper>
-  );
+export default ({ teamName, userName, channels, users, onAddChannelClick }) => (
+  <ChannelsWrapper>
+    <PushLeft>
+      <TeamNameHeader>{teamName}</TeamNameHeader>
+      {userName}
+    </PushLeft>
+    <div>
+      <SidebarList>
+        <SidebarListHeader>
+          Channels <Icon name="add circle" onClick={onAddChannelClick} />
+        </SidebarListHeader>
+        {channels.map(channel)}
+      </SidebarList>
+    </div>
+    <div>
+      <SidebarList>
+        <SidebarListHeader>Direct Messages</SidebarListHeader>
+        {users.map(user)}
+      </SidebarList>
+    </div>
+  </ChannelsWrapper>
+);

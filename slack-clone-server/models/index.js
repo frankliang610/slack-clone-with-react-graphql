@@ -2,9 +2,10 @@ import Sequelize from 'sequelize';
 
 const sequelize = new Sequelize('slack', 'frankmbp', 'frankmbp', {
   dialect: 'postgres',
+  operationsAliases: Sequelize.Op,
   define: {
-    underscored: true
-  }
+    underscored: true,
+  },
 });
 
 const models = {
@@ -12,11 +13,10 @@ const models = {
   Channel: sequelize.import('./channel'),
   // Member: sequelize.import('./member'),
   Message: sequelize.import('./message'),
-  Team: sequelize.import('./team')
+  Team: sequelize.import('./team'),
 };
 
-
-Object.keys(models).forEach(modelName => {
+Object.keys(models).forEach((modelName) => {
   if (models[modelName].associate) {
     models[modelName].associate(models);
   }
