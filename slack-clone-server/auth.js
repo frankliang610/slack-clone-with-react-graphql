@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 export const createTokens = async (user, secret, secret2) => {
   const createToken = jwt.sign(
     {
-      user: _.pick(user, ['id']),
+      user: _.pick(user, ['id', 'username']),
     },
     secret,
     {
@@ -19,30 +19,38 @@ export const createTokens = async (user, secret, secret2) => {
     },
     secret2,
     {
-      expiresIn: '7d'
+      expiresIn: '7d',
     }
   );
 
   return [createToken, createRefreshToken];
 };
 
-export const refreshTokens = async (token, refreshToken, models, SECRET,  SECRET2) => {
+export const refreshTokens = async (
+  token,
+  refreshToken,
+  models,
+  SECRET,
+  SECRET2
+) => {
   let userId = 0;
   try {
-    const { user: { id } } = jwt.decode(refreshToken);
+    const {
+      user: { id },
+    } = jwt.decode(refreshToken);
     userId = id;
   } catch (err) {
-    return {}
+    return {};
   }
 
   if (!userId) {
-    return {}
+    return {};
   }
 
   const user = await models.User.findOne({ where: { id: userId }, raw: true });
 
   if (!user) {
-    return {}
+    return {};
   }
 
   const refreshSecret = user.password + SECRET2;
@@ -50,14 +58,18 @@ export const refreshTokens = async (token, refreshToken, models, SECRET,  SECRET
   try {
     jwt.verify(refreshToken, refreshSecret);
   } catch (err) {
-    return {}
+    return {};
   }
 
-  const [newToken, newRefreshToken] = await createTokens(user, SECRET, refreshSecret);
+  const [newToken, newRefreshToken] = await createTokens(
+    user,
+    SECRET,
+    refreshSecret
+  );
   return {
     token: newToken,
     refreshToken: newRefreshToken,
-    user
+    user,
   };
 };
 
@@ -67,8 +79,8 @@ export const tryLogin = async (email, password, models, SECRET, SECRET2) => {
     // user with provided email not found
     return {
       ok: false,
-      errors: [{ path: 'email', message: 'No user with this email exists!' }]
-    }
+      errors: [{ path: 'email', message: 'No user with this email exists!' }],
+    };
   }
 
   const valid = await bcrypt.compare(password, user.password);
@@ -76,15 +88,19 @@ export const tryLogin = async (email, password, models, SECRET, SECRET2) => {
     // bad password
     return {
       ok: false,
-      errors: [{ path: 'password', message: 'Wrong password!' }]
+      errors: [{ path: 'password', message: 'Wrong password!' }],
     };
   }
   const refreshTokenSecret = user.password + SECRET2;
-  const [token, refreshToken] = await createTokens(user, SECRET, refreshTokenSecret);
+  const [token, refreshToken] = await createTokens(
+    user,
+    SECRET,
+    refreshTokenSecret
+  );
 
   return {
     ok: true,
     token,
-    refreshToken
-  }
-}
+    refreshToken,
+  };
+};
