@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import _ from 'lodash';
 import decode from 'jwt-decode';
@@ -7,6 +6,7 @@ import decode from 'jwt-decode';
 import Channels from '../components/Channels';
 import Teams from '../components/Teams';
 import AddChannelModal from '../components/AddChannelModal';
+import { allTeamQuery } from '../graphql/team';
 
 const Sdiebar = ({ data: { loading, allTeams }, currentTeamId }) => {
   const [openAddChannelModal, setOpenAddChannelModal] = useState(false);
@@ -41,6 +41,7 @@ const Sdiebar = ({ data: { loading, allTeams }, currentTeamId }) => {
     <Channels
       key="channels-sidebar"
       teamName={team.name}
+      teamId={team.id}
       userName={username}
       channels={team.channels}
       users={[
@@ -51,24 +52,11 @@ const Sdiebar = ({ data: { loading, allTeams }, currentTeamId }) => {
     />,
     <AddChannelModal
       key="sidebar-add-channel-modal"
-      teamId={parseInt(currentTeamId)}
+      teamId={team.id}
       open={openAddChannelModal}
       onClose={handleCloseAddChannelModal}
     />,
   ];
 };
-
-const allTeamQuery = gql`
-  {
-    allTeams {
-      id
-      name
-      channels {
-        id
-        name
-      }
-    }
-  }
-`;
 
 export default graphql(allTeamQuery)(Sdiebar);
