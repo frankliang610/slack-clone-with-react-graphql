@@ -1,10 +1,16 @@
 import React from 'react';
 import { extendObservable } from 'mobx';
 import { observer } from 'mobx-react';
-import { Form, Container, Header, Input, Button, Message } from 'semantic-ui-react';
+import {
+  Form,
+  Container,
+  Header,
+  Input,
+  Button,
+  Message,
+} from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-
 
 class CreateTeam extends React.Component {
   constructor(props) {
@@ -31,12 +37,10 @@ class CreateTeam extends React.Component {
 
     console.log('response :>> ', response);
 
-    console.log(response);
-
-    const { ok, errors } = response.data.createTeam;
+    const { ok, errors, team } = response.data.createTeam;
 
     if (ok) {
-      this.props.history.push('/');
+      this.props.history.push(`/view-team/${team.id}`);
     } else {
       const err = {};
       errors.forEach(({ path, message }) => {
@@ -53,7 +57,10 @@ class CreateTeam extends React.Component {
   };
 
   render() {
-    const { name, errors: { nameError } } = this;
+    const {
+      name,
+      errors: { nameError },
+    } = this;
 
     const errorList = [];
 
@@ -66,12 +73,22 @@ class CreateTeam extends React.Component {
         <Header as="h2">Create a team</Header>
         <Form>
           <Form.Field error={!!nameError}>
-            <Input name="name" onChange={this.onChange} value={name} placeholder="Name" fluid />
+            <Input
+              name="name"
+              onChange={this.onChange}
+              value={name}
+              placeholder="Name"
+              fluid
+            />
           </Form.Field>
           <Button onClick={this.onSubmit}>Submit</Button>
         </Form>
         {errorList.length ? (
-          <Message error header="There was some errors with your submission" list={errorList} />
+          <Message
+            error
+            header="There was some errors with your submission"
+            list={errorList}
+          />
         ) : null}
       </Container>
     );
@@ -82,6 +99,9 @@ const createTeamMutation = gql`
   mutation($name: String!) {
     createTeam(name: $name) {
       ok
+      team {
+        id
+      }
       errors {
         path
         message
@@ -91,5 +111,3 @@ const createTeamMutation = gql`
 `;
 
 export default graphql(createTeamMutation)(observer(CreateTeam));
-
-

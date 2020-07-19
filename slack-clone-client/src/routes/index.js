@@ -3,8 +3,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
-} from "react-router-dom";
+  Redirect,
+} from 'react-router-dom';
 
 import Home from './Home';
 import Register from './Register';
@@ -23,30 +23,27 @@ const isAuthenticated = () => {
     return false;
   }
   return true;
-}
+};
 
 const PrivateRoute = ({ children, ...rest }) => {
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        (isAuthenticated()
-          ? (
-            children
-          )
-          : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: location }
-              }}
-            />
-          )
+        isAuthenticated() ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: location },
+            }}
+          />
         )
       }
     />
   );
-}
+};
 
 export default () => (
   <Router>
@@ -54,7 +51,11 @@ export default () => (
       <Route path="/" exact component={Home} />
       <Route path="/register" exact component={Register} />
       <Route path="/login" exact component={Login} />
-      <Route path="/view-team" exact component={ViewTeam} />
+      <Route
+        path="/view-team/:teamId?/:channelId?"
+        exact
+        component={ViewTeam}
+      />
       <PrivateRoute path="/create-team" exact component={CreateTeam} />
     </Switch>
   </Router>
